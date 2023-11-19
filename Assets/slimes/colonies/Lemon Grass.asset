@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eef536a0cfa092459929bb991af4d42, type: 3}
+  m_Name: Lemon Grass
+  m_EditorClassIdentifier: 
+  offset: 10
+  numParticle: 50000
+  motionColor: {r: 0.180788, g: 0.09635693, b: 0.26415092, a: 1}
+  duration: 10
+  transition: 5
+  decayRed: 0.001
+  decayGreen: 0.05
+  decayBlue: 0.025
+  decayAlpha: 0.25
+  diffuseRadius: 1
+  species:
+  - size: 0
+    red: 0.1
+    green: 1
+    blue: 0.1
+    alpha: 1
+    continuation: 100
+    randomness: 20
+    attraction: 100
+    proximity: -25
+    turnSpeed: 0.5
+    damping: 0
+    gravity: 0
+    wind: 0
+    sensorAngleSpacing: 3
+    sensorOffsetDst: 200
+    initialSpeed: 0
+    effectDuration: 0
+    spawnProbability: 0
+    lifespan: 0
+  - size: 0
+    red: 0.1
+    green: 0.5
+    blue: 0
+    alpha: 1
+    continuation: 100
+    randomness: 20
+    attraction: 100
+    proximity: -25
+    turnSpeed: 0.5
+    damping: 0
+    gravity: 0
+    wind: 0
+    sensorAngleSpacing: 3
+    sensorOffsetDst: 200
+    initialSpeed: 0
+    effectDuration: 0
+    spawnProbability: 0
+    lifespan: 0
+  - size: 0
+    red: 0
+    green: 0.4
+    blue: 0.5
+    alpha: 1
+    continuation: 100
+    randomness: 20
+    attraction: 100
+    proximity: -25
+    turnSpeed: 0.5
+    damping: 0
+    gravity: 0
+    wind: 0
+    sensorAngleSpacing: 3
+    sensorOffsetDst: 200
+    initialSpeed: 0
+    effectDuration: 0
+    spawnProbability: 0.3
+    lifespan: 6
+  - size: 0
+    red: 0.1
+    green: 0.2
+    blue: 0.5
+    alpha: 1
+    continuation: 100
+    randomness: 20
+    attraction: 100
+    proximity: -25
+    turnSpeed: 0.5
+    damping: 0
+    gravity: 0
+    wind: 0
+    sensorAngleSpacing: 3
+    sensorOffsetDst: 200
+    initialSpeed: 0
+    effectDuration: 0
+    spawnProbability: 0.3
+    lifespan: 4

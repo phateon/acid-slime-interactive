@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 370f0311ff5eee6419014471144f0873, type: 3}
+  m_Name: Fast
+  m_EditorClassIdentifier: 
+  colonies:
+  - {fileID: 11400000, guid: 59fc62c7bbe851f4bb3da5dbbf708a24, type: 2}
+  - {fileID: 11400000, guid: 801f3261a3dd9074a98609b39a88308d, type: 2}
+  - {fileID: 11400000, guid: db7149a80510624498f801de15c9fa8f, type: 2}
+  - {fileID: 11400000, guid: 5368963cbc39d904abd54738ef36beae, type: 2}
+  - {fileID: 11400000, guid: bf19449ff0fe34d448c7f397758e8c49, type: 2}
+  current_settings_idx: 4

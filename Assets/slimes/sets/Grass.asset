@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 370f0311ff5eee6419014471144f0873, type: 3}
+  m_Name: Grass
+  m_EditorClassIdentifier: 
+  colonies:
+  - {fileID: 11400000, guid: ac62b22695592e44fa661d3bb24732f3, type: 2}
+  - {fileID: 11400000, guid: 24168020c93d18a4fb199fc01ad4c7d9, type: 2}
+  - {fileID: 11400000, guid: ac62b22695592e44fa661d3bb24732f3, type: 2}
+  current_settings_idx: 3
