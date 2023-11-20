@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 370f0311ff5eee6419014471144f0873, type: 3}
+  m_Name: Cells and Tyranny
+  m_EditorClassIdentifier: 
+  colonies:
+  - {fileID: 11400000, guid: f5f49a18de9145d4bb4e097754b46b8c, type: 2}
+  fade: 0.99600774
+  currentColonyTime: 6.239995
+  debug: 
+  nextColonyIndex: 0
+  currentColonyIndex: 0
+  currentCycle: 0

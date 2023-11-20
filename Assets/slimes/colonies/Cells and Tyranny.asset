@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eef536a0cfa092459929bb991af4d42, type: 3}
+  m_Name: Cells and Tyranny
+  m_EditorClassIdentifier: 
+  offset: 10
+  numParticle: 150000
+  motionColor: {r: 0.0021952812, g: 0.3490566, b: 0.028779274, a: 1}
+  duration: 15
+  transition: 5
+  decayRed: -0.3
+  decayGreen: -0.3
+  decayBlue: -0.16
+  decayAlpha: 0.5
+  diffuseRadius: 2
+  species:
+  - size: 0
+    red: 1.5
+    green: 0.5
+    blue: 0.5
+    alpha: 0
+    continuation: 150
+    randomness: 0
+    attraction: 50
+    proximity: -150
+    turnSpeed: 0.5
+    damping: 0
+    gravity: 0
+    wind: 0
+    sensorAngleSpacing: 0.25
+    sensorOffsetDst: 20
+    initialSpeed: 0
+    effectDuration: 0
+    spawnProbability: 0.25
+    lifespan: 0
+  - size: 0
+    red: -0.25
+    green: -0.5
+    blue: -0.5
+    alpha: 0.25
+    continuation: 150
+    randomness: 0
+    attraction: 50
+    proximity: -150
+    turnSpeed: 0.5
+    damping: 0
+    gravity: 0
+    wind: 0
+    sensorAngleSpacing: 0.25
+    sensorOffsetDst: 20
+    initialSpeed: 0
+    effectDuration: 0
+    spawnProbability: 0.25
+    lifespan: 0
+  - size: 0
+    red: 0.5
+    green: 1
+    blue: 0.5
+    alpha: 1
+    continuation: 100
+    randomness: 10
+    attraction: 100
+    proximity: 0
+    turnSpeed: 0.5
+    damping: 0
+    gravity: 0
+    wind: 0
+    sensorAngleSpacing: 0.25
+    sensorOffsetDst: 60
+    initialSpeed: 0
+    effectDuration: 0
+    spawnProbability: 0
+    lifespan: 0
+  - size: 0
+    red: 0
+    green: 0
+    blue: 0
+    alpha: 1
+    continuation: 100
+    randomness: 10
+    attraction: 100
+    proximity: 0
+    turnSpeed: 0.5
+    damping: 0
+    gravity: 0
+    wind: 0
+    sensorAngleSpacing: 0.25
+    sensorOffsetDst: 60
+    initialSpeed: 0
+    effectDuration: 0
+    spawnProbability: 0
+    lifespan: 0

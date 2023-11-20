@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eef536a0cfa092459929bb991af4d42, type: 3}
+  m_Name: Slime Mold Init
+  m_EditorClassIdentifier: 
+  stepsPerFrame: 1
+  width: 1920
+  height: 1080
+  numAgents: 50000
+  offset: 10
+  scale: 1
+  duration: 5
+  transition: 0.05
+  trailWeight: 50
+  decayRate: 0.25
+  diffuseRate: 50
+  species:
+  - red: 1
+    green: 1
+    blue: 0.25
+    alpha: 10.125
+    continuation: 100
+    randomness: 15
+    attraction: 25
+    proximity: 0
+    turnSpeed: 0.75
+    damping: 0
+    gravity: 0
+    wind: 0
+    sensorAngleSpacing: 0.2
+    sensorOffsetDst: 10
+    initialSpeed: 0
+    effectDuration: 0

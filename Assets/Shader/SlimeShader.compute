@@ -1,0 +1,346 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+////////////////////////////////////////////////////////////////////
+// Shared Structs
+////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+struct Particle {
+	float2 pos;
+	float2 speed;
+	float4 color;
+
+	float age;
+
+	int index;
+	int specie;
+};
+
+////////////////////////////////////////////////////////////////////
+struct Specie {
+	float size;
+
+	float red;
+	float green;
+	float blue;
+	float alpha;
+
+	float continuation;
+	float randomness;
+	float attraction;
+	float proximity;
+	float turn_angle;	
+
+	float damping;
+	float gravity;
+	float wind;
+
+	float scan_angle;
+	float scan_range;
+	
+	float initial;
+	float duration;
+	float spawn_probability;
+	float lifespan;
+};
+
+
+////////////////////////////////////////////////////////////////////
+// Parameters
+////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+int width;
+int height;
+
+float time;
+float delta_time;
+
+float offset;
+float decay_red;
+float decay_green;
+float decay_blue;
+float decay_alpha;
+float4 motion_color;
+
+uint num_species;
+uint num_particles;
+
+RWTexture2D<float4> trail;
+RWTexture2D<float4> input;
+
+RWStructuredBuffer<Specie> species;
+RWStructuredBuffer<Particle> particles;
+
+///////////////////////////////////////////////////////////////////
+// Hash function www.cs.ubc.ca/~rbridson/docs/schechter-sca08-turbulence.pdf
+////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+float rand_1d(uint state)
+{
+    state ^= 2747636419u;
+    state *= 2654435769u;
+    state ^= state >> 16;
+    state *= 2654435769u;
+    state ^= state >> 16;
+    state *= 2654435769u;
+	
+    return state / 4294967295.0;
+}
+
+////////////////////////////////////////////////////////////////////
+// Emitter Controls
+////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+Particle location_by_specie(Particle p, Specie sp)
+{
+	float specie_duration = sp.duration;
+	float specie_offset = rand_1d(p.specie);
+	float t_specie = ((time / specie_duration + specie_offset) % 1.0);
+	
+	if (t_specie < 0.01)
+	{
+		float x = rand_1d(uint(time * 10) * 3u);
+		float y = rand_1d(uint(time * 12) * 2u);
+		p.pos = float2(x * width, y * height);
+
+		float d_x = rand_1d(p.index + uint(time * 10) * 3u) * 2 - 1.0;
+		float d_y = rand_1d(p.index + uint(time * 12) * 2u) * 2 - 1.0;
+		float d_s = rand_1d(p.index) * 0.95 + 0.05;
+		
+		p.speed = normalize(float2(d_x, d_y)) * sp.initial * d_s;
+	}
+	
+	return p;
+}
+
+////////////////////////////////////////////////////////////////////
+// Edge Control
+////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+Particle edge_wrap(Particle p, float2 spd)
+{
+	if (p.pos.x > width) p.pos.x = spd.x;
+	if (p.pos.x < 0) p.pos.x = width + spd.x;
+	if (p.pos.y > height) p.pos.y = spd.y;
+	if (p.pos.y < 0) p.pos.y = height + spd.y;
+
+	return p;
+}
+
+////////////////////////////////////////////////////////////////////
+Particle edge_bounce(Particle p)
+{
+	p.pos.x = clamp(p.pos.x, offset, width-offset);
+	p.pos.y = clamp(p.pos.y, offset, height-offset);
+		
+	if (p.pos.x == width-offset) p.speed.x *= -1;
+	if (p.pos.x == offset) p.speed.x *= -1;
+	if (p.pos.y == height-offset) p.speed.y *= -1;
+	if (p.pos.y == offset) p.speed.y *= -1;
+
+	return p;
+}
+
+////////////////////////////////////////////////////////////////////
+Particle edge_death(Particle p)
+{
+	p.age = -1.0;
+	return p;
+}
+
+////////////////////////////////////////////////////////////////////
+// Particle Control
+////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+float2 rotate(float2 v, float a)
+{
+	v = normalize(v);
+		
+	float x2 = cos(a) * v.x - sin(a) * v.y;
+	float y2 = sin(a) * v.x + cos(a) * v.y;
+	
+	return float2(x2, y2);
+}
+
+////////////////////////////////////////////////////////////////////
+float2 direction_steer(Particle p, Specie sp)
+{
+	float2 dir = normalize(p.speed);
+	float2 c_uv = p.pos;
+
+    float2 s = c_uv + dir * sp.scan_range;
+    float2 l = c_uv + rotate(dir,  sp.scan_angle) * sp.scan_range;
+    float2 r = c_uv + rotate(dir, -sp.scan_angle) * sp.scan_range;
+
+    float s_s = trail[s].a;
+    float s_l = trail[l].a;
+    float s_r = trail[r].a;
+	
+	float mx = 0;
+	float angle = 0.0;
+	
+	if(s_s > mx) { mx = s_s;}
+	if(s_l > mx) { angle =  sp.turn_angle; mx = s_s;}
+	if(s_r > mx) { angle = -sp.turn_angle; mx = s_s;}
+	
+	return rotate(dir, angle);
+}
+
+////////////////////////////////////////////////////////////////////
+float2 proximity_gradient(Particle p, Specie sp)
+{
+	float r = sp.scan_range;
+	float2 c_uv = p.pos;
+
+    float2 tr = c_uv + float2( r,  r);
+    float2 tl = c_uv + float2(-r,  r);
+    float2 ll = c_uv + float2(-r, -r);
+    float2 lr = c_uv + float2( r, -r);
+
+    float s_tl = trail[tl].a;
+    float s_tr = trail[tr].a;
+    float s_lr = trail[lr].a;
+    float s_ll = trail[ll].a;
+    
+    float x = (s_tr + s_lr) - (s_tl + s_ll);
+    float y = (s_tl + s_tr) - (s_lr + s_ll);
+            
+    return float2(x, y);
+}
+
+////////////////////////////////////////////////////////////////////
+Particle calculate_particle_movement(Particle p, Specie sp)
+{	
+	uint index = p.index;
+
+	float2 cur_dir = normalize(p.speed);
+	float2 prx_dir = proximity_gradient(p, sp);
+	float2 att_dir = direction_steer(p, sp);
+	float2 phy_dir = float2(sp.wind, -sp.gravity);
+
+	float x = rand_1d(index + uint(time * 10) * 3u) * 2 - 1.0;
+	float y = rand_1d(index + uint(time * 12) * 2u) * 2 - 1.0;
+	float2 rng_dir_in = normalize(float2(x, y));
+	
+	float2 rng_dir = rng_dir_in * sp.randomness;
+	cur_dir *= sp.continuation;
+	att_dir *= sp.attraction;
+	prx_dir *= sp.proximity;
+	
+	p.speed = p.speed * sp.damping + (cur_dir + rng_dir + att_dir + prx_dir + phy_dir);
+	if (p.speed.x + p.speed.y == 0) { 
+		p.speed = rng_dir_in; }
+	
+	float2 spd = p.speed * delta_time;
+	p.pos += spd;
+	p = edge_wrap(p, spd);
+
+	return p;
+}
+
+////////////////////////////////////////////////////////////////////
+// update shader entry point
+////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+[numthreads(32, 1, 1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{   
+	int sp_id = id.x % num_species;
+	Specie s = species[sp_id];
+	Particle p = particles[id.x];
+	if (p.age < 0) { return; }
+
+	float life = s.lifespan - p.age;
+	if (life < 0 & s.lifespan > 0) { return; }
+	if (s.lifespan > 0) { p.age += delta_time; }
+	
+	p.specie = sp_id;	
+	p.color = float4(s.red, s.green, s.blue, s.alpha);
+	p = location_by_specie(p, s);
+	p = calculate_particle_movement(p, s);
+	
+	particles[id.x] = p;
+	trail[int2(p.pos)] = (s.lifespan > 0) ? p.color * (life / s.lifespan) : p.color;
+
+	int radius = int(s.size);
+	float d = 0;
+	float4 cl = float4(0, 0, 0, 0);
+	float4 base = float4(-1.0, -1.0, -1.0, -1.0);
+
+	for (int offsetX = -radius; offsetX <= radius; offsetX ++) {
+		for (int offsetY = -radius; offsetY <= radius; offsetY ++) {
+			int2 offset = int2(offsetX, offsetY);
+
+			d = 1 - length(float2(float(offsetX)/radius, float(offsetY)/radius));
+			cl = p.color * smoothstep(0.0, 1.0, d) * 2 - 1.0;
+			
+			trail[int2(p.pos) + offset] = max(max(cl, base), trail[int2(p.pos) + offset]);
+		}
+	}
+}
+
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSCopy
+
+float creation_threshold;
+float spawn_probability;
+float low_smooth; 
+float high_smooth; 
+float diffuse_radius;
+bool camera_test;
+int blur_sum;
+
+RWTexture2D<float4> input_pre;
+RWTexture2D<float4> trail_diffuse;
+
+[numthreads(8, 8, 1)]
+void CSCopy (uint3 id : SV_DispatchThreadID)
+{
+	float4 cl = 0;
+	int range = int(diffuse_radius);
+	for (int offsetX = -range; offsetX <= range; offsetX ++) {
+		for (int offsetY = -range; offsetY <= range; offsetY ++) {
+			int sampleX = min(width-1, max(0, id.x + offsetX));
+			int sampleY = min(height-1, max(0, id.y + offsetY));
+			cl += trail[int2(sampleX, sampleY)];
+		}
+	}
+
+	float4 cam = input[id.xy];
+	float o = length(cam.rgb);
+	float n = length(input_pre[id.xy].rgb);
+	float intensity = smoothstep(low_smooth, high_smooth, abs(o - n));
+
+	float4 decay = float4(decay_red, decay_green, decay_blue, decay_alpha);
+
+	cl /= blur_sum;
+	cl.rgb = intensity * motion_color.rgb + cl.rgb;
+	trail_diffuse[id.xy] = max(0, cl - decay * delta_time);
+
+	if (camera_test) {
+		float t = intensity > creation_threshold ? 1.0 : 0.0;
+		cam.g = intensity * abs(t - 1.0);
+		cam.r = t;
+		trail_diffuse[id.xy] = cam; 
+	}
+
+	if (intensity > creation_threshold) {
+		uint p_id = uint(rand_1d(uint(time * id.x * id.y)) * num_particles);
+		float rng = rand_1d(uint(time * id.y / id.x * 1000000));
+		float spawn_probability = species[particles[p_id].specie].spawn_probability; 
+	
+		if (rng < spawn_probability) { 
+			Particle p = particles[p_id];
+			p.pos = id.xy; 
+			p.age = 0;
+			particles[p_id] = p;
+		}
+	}
+}

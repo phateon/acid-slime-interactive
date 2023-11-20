@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eef536a0cfa092459929bb991af4d42, type: 3}
+  m_Name: Treasure Island
+  m_EditorClassIdentifier: 
+  offset: 10
+  numParticle: 50000
+  motionColor: {r: 0.21069178, g: 0.31560013, b: 0.5, a: 1}
+  duration: 10
+  transition: 5
+  decayRed: 0.75
+  decayGreen: 0.75
+  decayBlue: 0.75
+  decayAlpha: 0.75
+  diffuseRadius: 1
+  species:
+  - size: 0
+    red: 1.5
+    green: 1
+    blue: 0.5
+    alpha: 0.2
+    continuation: 60
+    randomness: 60
+    attraction: 200
+    proximity: -1500
+    turnSpeed: 50
+    damping: 0
+    gravity: 0
+    wind: 0
+    sensorAngleSpacing: 0.2
+    sensorOffsetDst: 10
+    initialSpeed: 0
+    effectDuration: 0
+    spawnProbability: 0
+    lifespan: 0
+  - size: 0
+    red: 0.25
+    green: 0.5
+    blue: 0.75
+    alpha: 0
+    continuation: 5
+    randomness: 50
+    attraction: 500
+    proximity: 0
+    turnSpeed: 20
+    damping: 0
+    gravity: 0
+    wind: 0
+    sensorAngleSpacing: 0.75
+    sensorOffsetDst: 20
+    initialSpeed: 0
+    effectDuration: 0
+    spawnProbability: 0.05
+    lifespan: 0
+  - size: 0
+    red: 0.5
+    green: 1
+    blue: 1.5
+    alpha: 1
+    continuation: 200
+    randomness: 200
+    attraction: 100
+    proximity: 20
+    turnSpeed: 20
+    damping: 0
+    gravity: 0
+    wind: 0
+    sensorAngleSpacing: 0.75
+    sensorOffsetDst: 50
+    initialSpeed: 0
+    effectDuration: 0
+    spawnProbability: 0.05
+    lifespan: 0
