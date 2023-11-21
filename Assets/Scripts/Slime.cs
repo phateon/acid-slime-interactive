@@ -40,6 +40,10 @@ public class Slime : MonoBehaviour
     public Colony currentColony;
     public int currentColonyIndex = 0;
     public int nextColonyIndex = 0;
+    public int numParticles = 50000;
+    public float decayGreen = 0.01f;
+    public float decayBlue = 0.01f;
+    public float decayRed = 0.01f;
 
     private int max_particles = 1024 * 512;
     private Particle[] particles;
@@ -261,6 +265,9 @@ public class Slime : MonoBehaviour
         shader.SetFloat("decay_red", currentColony.decayRed);
         shader.SetFloat("decay_green", currentColony.decayGreen);
         shader.SetFloat("decay_blue", currentColony.decayBlue);
+        //shader.SetFloat("decay_red", decayRed);
+        //shader.SetFloat("decay_green", decayGreen);
+        //shader.SetFloat("decay_blue", decayBlue);
         shader.SetFloat("decay_alpha", currentColony.decayAlpha);
         shader.SetFloat("diffuse_radius", currentColony.diffuseRadius);
 
