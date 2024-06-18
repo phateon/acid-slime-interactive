@@ -1,0 +1,206 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+////////////////////////////////////////////////////////////////////
+// Shared Structs
+////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+struct Particle {
+	float2 pos;
+	float2 speed;
+	float4 color;
+
+	float age;
+
+	int index;
+	int specie;
+};
+
+////////////////////////////////////////////////////////////////////
+struct Specie {
+	float size;
+
+	float red;
+	float green;
+	float blue;
+	float alpha;
+
+	float continuation;
+	float randomness;
+	float attraction;
+	float proximity;
+	float turn_angle;	
+
+	float damping;
+	float gravity;
+	float wind;
+
+	float scan_angle;
+	float scan_range;
+	
+	float initial;
+	float duration;
+	float spawn_probability;
+	float lifespan;
+};
+
+
+////////////////////////////////////////////////////////////////////
+// Parameters
+////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+uint width;
+uint height;
+
+float time;
+float delta_time;
+
+float offset;
+float decay_red;
+float decay_green;
+float decay_blue;
+float decay_alpha;
+float4 motion_color;
+
+uint num_species;
+uint num_particles;
+
+RWTexture2D<float4> trail;
+RWTexture2D<float4> input;
+
+RWStructuredBuffer<Specie> species;
+RWStructuredBuffer<Particle> particles;
+
+////////////////////////////////////////////////////////////////////
+// update shader entry point
+////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+[numthreads(32, 1, 1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{   
+	// do nothing we are just testing our camera setup.
+}
+
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSCopy
+
+float creation_threshold;
+float spawn_probability;
+float low_smooth; 
+float high_smooth; 
+float diffuse_radius;
+
+bool camera_test;
+
+float2 top_left;
+float2 top_right;
+float2 lower_left;
+float2 lower_right;
+
+int blur_sum;
+
+RWTexture2D<float4> input_pre;
+RWTexture2D<float4> trail_diffuse;
+
+bool isLeft(float2 a, float2 b, float2 c) {
+	return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x) > 0;
+}
+
+float det(float2 a, float2 b) {
+	return a.x * b.y - a.y * b.x;
+}
+
+float2 intersection(float2 a1, float2 a2, float2 b1, float2 b2) {
+	float2 xdiff = float2(a1.x - a2.x, b1.x - b2.x);
+	float2 ydiff = float2(a1.y - a2.y, b1.y - b2.y);
+
+	float div = det(xdiff, ydiff);
+	if(div == 0) { return float2(0.0, 0.0); }
+
+	float2 d = float2(det(a1, a2), det(b1, b2));
+	float x = det(d, xdiff) / div;
+	float y = det(d, ydiff) / div;
+
+	return float2(x, y);
+}
+
+float2 perspective_transform(float2 uv) {
+	float2 u_t = lerp(top_left, top_right, uv.x);
+	float2 u_b = lerp(lower_left, lower_right, uv.x);
+
+	float2 v_l = lerp(lower_left, top_left, uv.y);
+	float2 v_r = lerp(lower_right, top_right, uv.y);
+
+	float2 new_xy = intersection(v_l, v_r, u_b, u_t);
+	return new_xy;
+}
+
+float3 cross(float2 uv, float2 pos)
+{
+	float thickness = 0.002;
+
+	float x1 = step(pos.x - thickness, uv.x);
+	float x2 = step(uv.x, pos.x + thickness);
+	float top_clip = step(uv.y, pos.y + 0.05);
+	float low_clip = step(pos.y - 0.05, uv.y);
+	
+	float y1 = step(pos.y - thickness, uv.y);
+	float y2 = step(uv.y, pos.y + thickness);
+	float left_clip = step(uv.x, pos.x + 0.05);
+	float right_clip = step(pos.x - 0.05, uv.x);
+	
+	float3 color_x = x1 * x2 * top_clip * low_clip * float3(1.0, 1.0, 1.0);
+	float3 color_y = y1 * y2 * left_clip * right_clip * float3(1.0, 1.0, 1.0);
+
+	return color_x + color_y;
+}
+
+[numthreads(8, 8, 1)]
+void CSCopy (uint3 id : SV_DispatchThreadID)
+{
+	uint2 cam_upper_left = uint2(id.xy / 2) + uint2(0, height / 2);
+	uint2 cam_upper_right = uint2(id.xy / 2) + uint2(width / 2, height / 2);
+
+	uint2 cam_lower_left = uint2(id.xy / 2);
+	uint2 cam_lower_right = uint2(id.xy / 2) + uint2(width / 2, 0);
+
+	float2 wh = float2(width, height); 
+	float2 id_uv = id.xy / wh;
+	
+	// Base camera image and previous image
+	float4 base = input[id.xy];
+	float4 base_pre = input_pre[id.xy];
+	base.rgb += cross(id_uv, top_left / wh);
+	base.rgb += cross(id_uv, top_right / wh);
+	base.rgb += cross(id_uv, lower_left / wh);
+	base.rgb += cross(id_uv, lower_right / wh);
+
+	// Transformed camera image and transformed previous image
+	float2 n_id = perspective_transform(id_uv);
+	float4 trans = input[n_id.xy];
+	float4 trans_pre = input_pre[n_id.xy];
+
+	// Change between the transformed current and previous image
+	float o = length(trans.rgb);
+	float n = length(trans_pre.rgb);
+	float intensity = smoothstep(low_smooth, high_smooth, abs(o - n));
+	float generate = intensity > creation_threshold ? 1.0 : 0.0;
+
+	// Final effect of camer image input
+	float4 processed = trans;
+	processed.g = intensity * abs(generate - 1.0);
+	processed.r = generate;
+
+	if (camera_test) { 
+		trail_diffuse[id.xy] = processed;	
+	}
+	else {
+		trail_diffuse[cam_upper_left] = base;
+		trail_diffuse[cam_upper_right] = trans;
+		trail_diffuse[cam_lower_left] = intensity;
+		trail_diffuse[cam_lower_right] = processed;
+	}
+}

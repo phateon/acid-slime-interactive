@@ -294,11 +294,48 @@ float spawn_probability;
 float low_smooth; 
 float high_smooth; 
 float diffuse_radius;
+
 bool camera_test;
+
+float2 top_left;
+float2 top_right;
+float2 lower_left;
+float2 lower_right;
+
 int blur_sum;
 
 RWTexture2D<float4> input_pre;
 RWTexture2D<float4> trail_diffuse;
+
+
+float det(float2 a, float2 b) {
+	return a.x * b.y - a.y * b.x;
+}
+
+float2 intersection(float2 a1, float2 a2, float2 b1, float2 b2) {
+	float2 xdiff = float2(a1.x - a2.x, b1.x - b2.x);
+	float2 ydiff = float2(a1.y - a2.y, b1.y - b2.y);
+
+	float div = det(xdiff, ydiff);
+	if(div == 0) { return float2(0.0, 0.0); }
+
+	float2 d = float2(det(a1, a2), det(b1, b2));
+	float x = det(d, xdiff) / div;
+	float y = det(d, ydiff) / div;
+
+	return float2(x, y);
+}
+
+float2 perspective_transform(float2 uv) {
+	float2 u_t = lerp(top_left, top_right, uv.x);
+	float2 u_b = lerp(lower_left, lower_right, uv.x);
+
+	float2 v_l = lerp(lower_left, top_left, uv.y);
+	float2 v_r = lerp(lower_right, top_right, uv.y);
+
+	float2 new_xy = intersection(v_l, v_r, u_b, u_t);
+	return new_xy;
+}
 
 [numthreads(8, 8, 1)]
 void CSCopy (uint3 id : SV_DispatchThreadID)
@@ -313,23 +350,19 @@ void CSCopy (uint3 id : SV_DispatchThreadID)
 		}
 	}
 
-	float4 cam = input[id.xy];
-	float o = length(cam.rgb);
-	float n = length(input_pre[id.xy].rgb);
-	float intensity = smoothstep(low_smooth, high_smooth, abs(o - n));
+	// Transformed camera image and transformed previous image
+	float2 wh = float2(width, height); 
+	float2 id_uv = id.xy / wh;
+	float2 n_id = perspective_transform(id_uv);
 
+	float o = length(input[n_id.xy].rgb);
+	float n = length(input_pre[n_id.xy].rgb);
+	float intensity = smoothstep(low_smooth, high_smooth, abs(o - n));
 	float4 decay = float4(decay_red, decay_green, decay_blue, decay_alpha);
 
 	cl /= blur_sum;
 	cl.rgb = intensity * motion_color.rgb + cl.rgb;
 	trail_diffuse[id.xy] = max(0, cl - decay * delta_time);
-
-	if (camera_test) {
-		float t = intensity > creation_threshold ? 1.0 : 0.0;
-		cam.g = intensity * abs(t - 1.0);
-		cam.r = t;
-		trail_diffuse[id.xy] = cam; 
-	}
 
 	if (intensity > creation_threshold) {
 		uint p_id = uint(rand_1d(uint(time * id.x * id.y)) * num_particles);

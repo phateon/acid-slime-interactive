@@ -12,49 +12,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eef536a0cfa092459929bb991af4d42, type: 3}
   m_Name: test
   m_EditorClassIdentifier: 
-  offset: 1
-  numParticle: 5000
-  motionColor: {r: 0.20701168, g: 0.11934852, b: 0.254717, a: 1}
+  offset: 0
+  numParticle: 50000
+  motionColor: {r: 0, g: 0, b: 0, a: 1}
   duration: 50
   transition: 5
-  decayRate: 0.01
+  decayRed: 1
+  decayGreen: 1
+  decayBlue: 1
+  decayAlpha: 1
   diffuseRadius: 1
   species:
-  - size: 1
-    red: 1.5
-    green: 0.5
+  - size: 2
+    red: 2
+    green: 1.5
     blue: 1
     alpha: 1
-    continuation: 0
-    randomness: 0
+    continuation: 10
+    randomness: 10
     attraction: 100
     proximity: 0
     turnSpeed: 0.5
     damping: 0
     gravity: 0
     wind: 0
-    sensorAngleSpacing: 0.15
+    sensorAngleSpacing: 0.5
     sensorOffsetDst: 20
     initialSpeed: 0
     effectDuration: 0
     spawnProbability: 0
-    lifespan: 0
-  - size: 1
-    red: 0
-    green: 0
-    blue: 0
-    alpha: 1
-    continuation: 0
-    randomness: 0
-    attraction: 100
-    proximity: 0
-    turnSpeed: 0.5
-    damping: 0
-    gravity: 0
-    wind: 0
-    sensorAngleSpacing: 0.15
-    sensorOffsetDst: 20
-    initialSpeed: 0
-    effectDuration: 0
-    spawnProbability: 1
     lifespan: 0

@@ -1,22 +1,29 @@
 using System;
 using System.Collections.Generic;
-
 using UnityEngine;
-using UnityEngine.Profiling;
 
 public class Slime : MonoBehaviour
 {
-    protected List<string> cameras = new List<string>();
-
     [Header("Shader")]
     public ComputeShader shader;
 
     [Header("Camera Input")]
-    [Dropdown("cameras")]
+    public CameraSetup cameraSetup;
+
+    /*[Dropdown("cameras")]
     public String selected_camera;
     public Boolean cameraTest;
+    public Boolean cameraHorizontalFlip;
+    public Boolean cameraVerticalFlip;
+
+    public Vector2 topLeft;
+    public Vector2 topRight;
+    public Vector2 lowerLeft;
+    public Vector2 lowerRight;
+    public Vector2 uv;
+
     public float lowSmooth;
-    public float highSmooth;
+    public float highSmooth;*/
     public float particleThreshold;
 
     [Header("Buffer")]
@@ -92,26 +99,21 @@ public class Slime : MonoBehaviour
     ////////////////////////////////////////////////////////////////
     public void InitCamera()
     {
-        WebCamDevice[] devices = WebCamTexture.devices;
-        for (int i = 0; i < devices.Length; i++)
-        {
-            Debug.Log(devices[i].name);
-            cameras.Add(devices[i].name);
-        }
-
-        selected_camera = cameras[0];
+        cameraSetup.InitCameras();
         SwitchCamera();
     }
 
     ////////////////////////////////////////////////////////////////
     public void UpdateCamera()
     {
-        if (webcam_texture.deviceName != selected_camera) { SwitchCamera(); }
+        if (webcam_texture.deviceName != cameraSetup.selectedCamera) { SwitchCamera(); }
         if (!webcam_texture.didUpdateThisFrame) { return; }
 
         // Debug.Log("Camera: " + Time.fixedTime);
 
-        Vector2 origin = new Vector2(-1.0f, 1.0f);
+        float vertical = cameraSetup.cameraVerticalFlip ? -1.0f : 1.0f;
+        float horizontal = cameraSetup.cameraHorizontalFlip ? -1.0f : 1.0f;
+        Vector2 origin = new Vector2(vertical, horizontal);
         Vector2 target = new Vector2(.0f, 1.0f);
 
         Graphics.CopyTexture(input_intermediary, input_intermediary_pre);
@@ -123,10 +125,10 @@ public class Slime : MonoBehaviour
     ///////////////////////////////////////////////////////////////////////////
     public void SwitchCamera()
     {
-        Debug.Log("Cam Switch: " + selected_camera);
+        Debug.Log("Cam Switch: " + cameraSetup.selectedCamera);
 
         webcam_texture = new WebCamTexture();
-        webcam_texture.deviceName = selected_camera;
+        webcam_texture.deviceName = cameraSetup.selectedCamera;
         webcam_texture.Play();
 
         UpdateCameraTextures();
@@ -268,11 +270,18 @@ public class Slime : MonoBehaviour
         int blurSum = diffuseDiameter * diffuseDiameter;
 
         shader.SetInt("blur_sum", blurSum);
-        shader.SetBool("camera_test", cameraTest);
-        shader.SetVector("motion_color", currentColony.motionColor);
+        shader.SetBool("camera_test", cameraSetup.cameraTest);
+        shader.SetVector("top_left", cameraSetup.topLeft);
+        shader.SetVector("top_right", cameraSetup.topRight);
+        shader.SetVector("lower_left", cameraSetup.lowerLeft);
+        shader.SetVector("lower_right", cameraSetup.lowerRight);
+     
+        shader.SetFloat("low_smooth", cameraSetup.lowSmooth);
+        shader.SetFloat("high_smooth", cameraSetup.highSmooth);
 
-        shader.SetFloat("low_smooth", lowSmooth);
-        shader.SetFloat("high_smooth", highSmooth);
+        shader.SetVector("color_boost", cameraSetup.colorBoost);
+
+        shader.SetVector("motion_color", currentColony.motionColor);
         shader.SetFloat("creation_threshold", particleThreshold);
 
         // Dispatch the update kernel of the compute shader

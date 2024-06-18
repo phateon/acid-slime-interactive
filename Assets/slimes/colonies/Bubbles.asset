@@ -41,7 +41,7 @@ MonoBehaviour:
     initialSpeed: 0
     effectDuration: 0
     spawnProbability: 0.1
-    lifespan: 0
+    lifespan: 5
   - size: 0
     red: 0
     green: 0
@@ -60,7 +60,7 @@ MonoBehaviour:
     initialSpeed: 0
     effectDuration: 0
     spawnProbability: 0.1
-    lifespan: 0
+    lifespan: 5
   - size: 0
     red: 0.5
     green: 1
@@ -79,4 +79,4 @@ MonoBehaviour:
     initialSpeed: 0
     effectDuration: 0
     spawnProbability: 0.1
-    lifespan: 0
+    lifespan: 5
