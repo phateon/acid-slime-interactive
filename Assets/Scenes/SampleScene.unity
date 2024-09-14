@@ -239,7 +239,10 @@ MonoBehaviour:
   input_texture: {fileID: 0}
   input_texture_pre: {fileID: 0}
   colonies:
-  - {fileID: 11400000, guid: 8775e2530b1fe6241ae0c07cdadd4974, type: 2}
+  - {fileID: 11400000, guid: 7cfa7269e7fe136448dcdc6908856823, type: 2}
+  - {fileID: 11400000, guid: 9e295c11fbb5eb341a2ce66def4fa0c5, type: 2}
+  - {fileID: 11400000, guid: 62a2cd3de9e888a46b50a77fc6eb6f82, type: 2}
+  - {fileID: 11400000, guid: 8e7b5e27acc157f4599e5f04ccc4ab03, type: 2}
   currentColony: {fileID: 0}
   currentColonyIndex: 0
   nextColonyIndex: 0
