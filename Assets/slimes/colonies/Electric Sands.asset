@@ -17,9 +17,9 @@ MonoBehaviour:
   motionColor: {r: 0.7075472, g: 0.60481, b: 0.13794939, a: 1}
   duration: 20
   transition: 10
-  decayRed: 0.05
-  decayGreen: 0.1
-  decayBlue: 0.1
+  decayRed: 0.03
+  decayGreen: 0.02
+  decayBlue: 0.01
   decayAlpha: 0.25
   diffuseRadius: 1
   species:

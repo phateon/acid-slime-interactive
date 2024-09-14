@@ -17,9 +17,9 @@ MonoBehaviour:
   motionColor: {r: 0.020232517, g: 0.32626936, b: 0.5849056, a: 1}
   duration: 20
   transition: 10
-  decayRed: 0.25
-  decayGreen: 0.25
-  decayBlue: 0.25
+  decayRed: 0
+  decayGreen: 0
+  decayBlue: 0
   decayAlpha: 0.25
   diffuseRadius: 1
   species:
@@ -41,7 +41,7 @@ MonoBehaviour:
     initialSpeed: 0
     effectDuration: 0
     spawnProbability: 0.1
-    lifespan: 5
+    lifespan: 0
   - size: 0
     red: 0
     green: 0
@@ -60,7 +60,7 @@ MonoBehaviour:
     initialSpeed: 0
     effectDuration: 0
     spawnProbability: 0.1
-    lifespan: 5
+    lifespan: 0
   - size: 0
     red: 0.5
     green: 1
@@ -78,5 +78,5 @@ MonoBehaviour:
     sensorOffsetDst: 5
     initialSpeed: 0
     effectDuration: 0
-    spawnProbability: 0.1
-    lifespan: 5
+    spawnProbability: 0.9
+    lifespan: 10

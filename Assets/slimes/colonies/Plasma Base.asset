@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: Plasma Base
   m_EditorClassIdentifier: 
   offset: 10
-  numParticle: 50000
+  numParticle: 150000
   motionColor: {r: 0.24460813, g: 0.20455083, b: 0.3301887, a: 1}
   duration: 15
   transition: 5
-  decayRate: 0.25
+  decayRed: 0.3
+  decayGreen: 0.3
+  decayBlue: 0.3
+  decayAlpha: 0.25
   diffuseRadius: 1
   species:
   - size: 0
@@ -56,5 +59,24 @@ MonoBehaviour:
     sensorOffsetDst: 40
     initialSpeed: 0
     effectDuration: 0
-    spawnProbability: 0
+    spawnProbability: 0.3
+    lifespan: 0
+  - size: 0
+    red: 0.5
+    green: 1
+    blue: 1.5
+    alpha: 1
+    continuation: 0
+    randomness: 0
+    attraction: 100
+    proximity: 15
+    turnSpeed: 0.5
+    damping: 0
+    gravity: 0
+    wind: 0
+    sensorAngleSpacing: 0.5
+    sensorOffsetDst: 40
+    initialSpeed: 0
+    effectDuration: 0
+    spawnProbability: 0.3
     lifespan: 0

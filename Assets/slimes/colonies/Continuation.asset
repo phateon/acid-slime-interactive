@@ -13,17 +13,20 @@ MonoBehaviour:
   m_Name: Continuation
   m_EditorClassIdentifier: 
   offset: 10
-  numParticle: 50000
+  numParticle: 1000000
   motionColor: {r: 0, g: 0, b: 0, a: 1}
   duration: 5
   transition: 5
-  decayRate: 0.75
+  decayRed: 0
+  decayGreen: 0
+  decayBlue: 0
+  decayAlpha: 0
   diffuseRadius: 1
   species:
   - size: 0
-    red: 0.25
-    green: 1.25
-    blue: 1
+    red: 0
+    green: 0
+    blue: 1.5
     alpha: 0
     continuation: 100
     randomness: 0
@@ -37,12 +40,12 @@ MonoBehaviour:
     sensorOffsetDst: 0
     initialSpeed: 0
     effectDuration: 0
-    spawnProbability: 0.5
+    spawnProbability: 0
     lifespan: 0
   - size: 0
-    red: 1.25
-    green: 0.25
-    blue: 1
+    red: 0
+    green: 1.5
+    blue: 0
     alpha: 0
     continuation: 100
     randomness: 0
@@ -56,12 +59,12 @@ MonoBehaviour:
     sensorOffsetDst: 0
     initialSpeed: 0
     effectDuration: 0
-    spawnProbability: 0.5
+    spawnProbability: 0
     lifespan: 0
   - size: 0
-    red: 0.25
-    green: 1
-    blue: 1.25
+    red: 1.5
+    green: 0
+    blue: 0
     alpha: 0
     continuation: 100
     randomness: 0
