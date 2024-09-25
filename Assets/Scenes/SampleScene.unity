@@ -229,11 +229,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 7200000, guid: cc2dde2efd20a4c489b05acdc6f2f3d8, type: 3}
-  selected_camera: 
-  cameraTest: 0
-  lowSmooth: 0.2
-  highSmooth: 1
-  particleThreshold: 0.2
+  cameraSetup: {fileID: 11400000, guid: 726b81ef34642164fac831e3fff9eb19, type: 2}
+  particleThreshold: 0.1
   webcam_texture: {fileID: 0}
   input_intermediary: {fileID: 0}
   input_intermediary_pre: {fileID: 0}
@@ -242,7 +239,7 @@ MonoBehaviour:
   input_texture: {fileID: 0}
   input_texture_pre: {fileID: 0}
   colonies:
-  - {fileID: 11400000, guid: 8775e2530b1fe6241ae0c07cdadd4974, type: 2}
+  - {fileID: 11400000, guid: 7cfa7269e7fe136448dcdc6908856823, type: 2}
   currentColony: {fileID: 0}
   currentColonyIndex: 0
   nextColonyIndex: 0
