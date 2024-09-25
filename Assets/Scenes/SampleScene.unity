@@ -240,6 +240,20 @@ MonoBehaviour:
   input_texture_pre: {fileID: 0}
   colonies:
   - {fileID: 11400000, guid: 7cfa7269e7fe136448dcdc6908856823, type: 2}
+  - {fileID: 11400000, guid: a50660f9e3515704e8ab304a5ad76bb2, type: 2}
+  - {fileID: 11400000, guid: d8294c4e856de1e4baae89b32c578f60, type: 2}
+  - {fileID: 11400000, guid: 9403236d10a163c4287815650c2e7e6a, type: 2}
+  - {fileID: 11400000, guid: 38e27031181685440ade7851e5252cd1, type: 2}
+  - {fileID: 11400000, guid: 9e295c11fbb5eb341a2ce66def4fa0c5, type: 2}
+  - {fileID: 11400000, guid: cabfa75c94f54d043bb25556e71823eb, type: 2}
+  - {fileID: 11400000, guid: 62a2cd3de9e888a46b50a77fc6eb6f82, type: 2}
+  - {fileID: 11400000, guid: 857b18350de7af441b3e5ffaa4f6db78, type: 2}
+  - {fileID: 11400000, guid: 7c6ab119b0ee22d4e8a72cfdaf9b4e6b, type: 2}
+  - {fileID: 11400000, guid: f2f1a7c92ffc84347b0839e34fcfd818, type: 2}
+  - {fileID: 11400000, guid: 8e7b5e27acc157f4599e5f04ccc4ab03, type: 2}
+  - {fileID: 11400000, guid: 9c3323328950965468e40d7950999e6e, type: 2}
+  - {fileID: 11400000, guid: e1508b3918305ed4590f57eff4dcf64c, type: 2}
+  - {fileID: 11400000, guid: e1508b3918305ed4590f57eff4dcf64c, type: 2}
   currentColony: {fileID: 0}
   currentColonyIndex: 0
   nextColonyIndex: 0

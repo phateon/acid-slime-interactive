@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: Plasma
   m_EditorClassIdentifier: 
   colonies:
-  - {fileID: 11400000, guid: eb8407e55d0858843b0e3f13dc542132, type: 2}
-  - {fileID: 11400000, guid: e9d4d32311df21d4d94d2ae5838fbf62, type: 2}
   - {fileID: 11400000, guid: c6749b512b216ef45b289df198091f54, type: 2}
   - {fileID: 11400000, guid: 12819a8b0d4518940891dd3766602a2d, type: 2}
-  current_settings_idx: 3
+  fade: 0.9977806
+  currentColonyTime: 0
+  debug: 
+  nextColonyIndex: 1
+  currentColonyIndex: 0
+  currentCycle: 0

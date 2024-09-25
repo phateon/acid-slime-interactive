@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Treasure Island
   m_EditorClassIdentifier: 
   colonies:
-  - {fileID: 11400000, guid: 140de0e9905cfc5458b91f9d7cfecec5, type: 2}
   - {fileID: 11400000, guid: 4373637b04066a143bbdd6b172887a15, type: 2}
-  current_settings_idx: 1
+  fade: 0.99938565
+  currentColonyTime: 0
+  debug: 
+  nextColonyIndex: 0
+  currentColonyIndex: 0
+  currentCycle: 0

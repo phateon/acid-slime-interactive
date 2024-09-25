@@ -15,15 +15,15 @@ MonoBehaviour:
   offset: 10
   numParticle: 50000
   motionColor: {r: 0.21069178, g: 0.31560013, b: 0.5, a: 1}
-  duration: 10
-  transition: 5
-  decayRed: 0.75
-  decayGreen: 0.75
-  decayBlue: 0.75
-  decayAlpha: 0.75
+  duration: 15
+  transition: 10
+  decayRed: 0.3
+  decayGreen: 0.3
+  decayBlue: 0.3
+  decayAlpha: 0.1
   diffuseRadius: 1
   species:
-  - size: 0
+  - size: 1
     red: 1.5
     green: 1
     blue: 0.5
@@ -42,7 +42,7 @@ MonoBehaviour:
     effectDuration: 0
     spawnProbability: 0
     lifespan: 0
-  - size: 0
+  - size: 1
     red: 0.25
     green: 0.5
     blue: 0.75
@@ -59,9 +59,9 @@ MonoBehaviour:
     sensorOffsetDst: 20
     initialSpeed: 0
     effectDuration: 0
-    spawnProbability: 0.05
+    spawnProbability: 0
     lifespan: 0
-  - size: 0
+  - size: 1
     red: 0.5
     green: 1
     blue: 1.5
@@ -78,5 +78,5 @@ MonoBehaviour:
     sensorOffsetDst: 50
     initialSpeed: 0
     effectDuration: 0
-    spawnProbability: 0.05
+    spawnProbability: 0
     lifespan: 0

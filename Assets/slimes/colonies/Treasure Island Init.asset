@@ -16,7 +16,7 @@ MonoBehaviour:
   numParticle: 50000
   motionColor: {r: 0, g: 0, b: 0, a: 1}
   duration: 5
-  transition: 0.01
+  transition: 5
   decayRed: 0
   decayGreen: 0
   decayBlue: 0

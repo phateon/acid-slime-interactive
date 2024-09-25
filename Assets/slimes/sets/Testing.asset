@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Testing
   m_EditorClassIdentifier: 
   colonies:
-  - {fileID: 11400000, guid: c6749b512b216ef45b289df198091f54, type: 2}
-  fade: 0.99905205
-  currentColonyTime: 3.2582755
+  - {fileID: 11400000, guid: 4373637b04066a143bbdd6b172887a15, type: 2}
+  fade: 0.5470198
+  currentColonyTime: 20.470198
   debug: 
   nextColonyIndex: 0
   currentColonyIndex: 0

@@ -17,28 +17,28 @@ MonoBehaviour:
   motionColor: {r: 0, g: 0, b: 0, a: 1}
   duration: 50
   transition: 5
-  decayRed: 1
-  decayGreen: 1
-  decayBlue: 1
-  decayAlpha: 1
+  decayRed: 0.5
+  decayGreen: 0.5
+  decayBlue: 0.5
+  decayAlpha: 0.5
   diffuseRadius: 1
   species:
-  - size: 2
-    red: 2
-    green: 1.5
+  - size: 1
+    red: 1
+    green: 1
     blue: 1
     alpha: 1
-    continuation: 10
-    randomness: 10
+    continuation: 0
+    randomness: 0
     attraction: 100
-    proximity: 0
+    proximity: -33.33
     turnSpeed: 0.5
     damping: 0
     gravity: 0
     wind: 0
-    sensorAngleSpacing: 0.5
-    sensorOffsetDst: 20
-    initialSpeed: 0
+    sensorAngleSpacing: -14.7
+    sensorOffsetDst: 200.4
+    initialSpeed: 1000
     effectDuration: 0
     spawnProbability: 0
     lifespan: 0
