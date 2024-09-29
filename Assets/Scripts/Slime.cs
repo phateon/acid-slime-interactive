@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
+using System.Net;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Slime : MonoBehaviour
@@ -54,6 +57,7 @@ public class Slime : MonoBehaviour
 
     private int max_particles = 1024 * 512;
     private Particle[] particles;
+    private TcpListener server;
 
     ///////////////////////////////////////////////////////////////////////////
     protected virtual void Start()
@@ -63,9 +67,11 @@ public class Slime : MonoBehaviour
         InitCamera();
         InitParticles();
         InitColonies();
-
         UpdateBuffers();
         UpdateTextures();
+
+        IPAddress localAddr = IPAddress.Parse("127.0.0.1");
+        server = new TcpListener(localAddr, 6666);
     }
 
     ///////////////////////////////////////////////////////////////////////////

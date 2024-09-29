@@ -217,6 +217,6 @@ void CSCopy (uint3 id : SV_DispatchThreadID)
 		trail_diffuse[cam_upper_left] = base;
 		trail_diffuse[cam_upper_right] = trans;
 		trail_diffuse[cam_lower_left] = intensity;
-		trail_diffuse[uint2(cam_lower_right / 8)] = processed;
+		trail_diffuse[cam_lower_right] = processed;
 	}
 }
